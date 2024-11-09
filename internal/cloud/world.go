@@ -1,4 +1,4 @@
-package infra
+package cloud
 
 import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"

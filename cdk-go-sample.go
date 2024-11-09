@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cdk-go-sample/infra"
+	"cdk-go-sample/internal/cloud"
 
 	"github.com/aws/aws-cdk-go/awscdk/v2"
 	"github.com/aws/aws-cdk-go/awscdk/v2/awsapigatewayv2"
@@ -28,8 +28,8 @@ func NewCdkGoSampleStack(scope constructs.Construct, id string, props *CdkGoSamp
 	})
 
 	//ROUTES
-	httpApi.AddRoutes(infra.GetRouteHello(stack))
-	httpApi.AddRoutes(infra.GetRouteWorld(stack))
+	httpApi.AddRoutes(cloud.GetRouteHello(stack))
+	httpApi.AddRoutes(cloud.GetRouteWorld(stack))
 
 	return stack
 }
