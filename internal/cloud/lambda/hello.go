@@ -1,4 +1,4 @@
-package cloud
+package lambda
 
 import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
@@ -9,8 +9,7 @@ import (
 	"github.com/aws/jsii-runtime-go"
 )
 
-func GetRouteHello(stack awscdk.Stack) *awsapigatewayv2.AddRoutesOptions {
-
+func RegisterHelloRoutes(stack awscdk.Stack, httpApi awsapigatewayv2.HttpApi) {
 	//LAMBDAS
 	helloLambda := awslambda.NewFunction(stack, jsii.String("HelloLambda"), &awslambda.FunctionProps{
 		Runtime:      awslambda.Runtime_PROVIDED_AL2023(),
@@ -22,9 +21,9 @@ func GetRouteHello(stack awscdk.Stack) *awsapigatewayv2.AddRoutesOptions {
 	//INTEGRATIONS
 	helloIntegration := awsapigatewayv2integrations.NewHttpLambdaIntegration(jsii.String("HelloIntegration"), helloLambda, &awsapigatewayv2integrations.HttpLambdaIntegrationProps{})
 
-	return &awsapigatewayv2.AddRoutesOptions{
+	httpApi.AddRoutes(&awsapigatewayv2.AddRoutesOptions{
 		Path:        jsii.String("/hello"),
 		Methods:     &[]awsapigatewayv2.HttpMethod{awsapigatewayv2.HttpMethod_GET},
 		Integration: helloIntegration,
-	}
+	})
 }

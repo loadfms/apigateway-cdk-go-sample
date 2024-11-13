@@ -1,4 +1,4 @@
-package cloud
+package lambda
 
 import (
 	"github.com/aws/aws-cdk-go/awscdk/v2"
@@ -9,8 +9,7 @@ import (
 	"github.com/aws/jsii-runtime-go"
 )
 
-func GetRouteWorld(stack awscdk.Stack) *awsapigatewayv2.AddRoutesOptions {
-
+func RegisterWorldRoutes(stack awscdk.Stack, httpApi awsapigatewayv2.HttpApi) {
 	//LAMBDAS
 	worldLambda := awslambda.NewFunction(stack, jsii.String("WorldLambda"), &awslambda.FunctionProps{
 		Runtime:      awslambda.Runtime_PROVIDED_AL2023(),
@@ -22,9 +21,9 @@ func GetRouteWorld(stack awscdk.Stack) *awsapigatewayv2.AddRoutesOptions {
 	//INTEGRATIONS
 	worldIntegration := awsapigatewayv2integrations.NewHttpLambdaIntegration(jsii.String("WorldIntegration"), worldLambda, &awsapigatewayv2integrations.HttpLambdaIntegrationProps{})
 
-	return &awsapigatewayv2.AddRoutesOptions{
+	httpApi.AddRoutes(&awsapigatewayv2.AddRoutesOptions{
 		Path:        jsii.String("/world"),
 		Methods:     &[]awsapigatewayv2.HttpMethod{awsapigatewayv2.HttpMethod_POST},
 		Integration: worldIntegration,
-	}
+	})
 }
